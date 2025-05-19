@@ -2,20 +2,21 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import { Button } from "../../components/ui/button"
 import { Menu, X } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { cn } from "../../lib/utils"
 import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "Services", href: "/#services" },
+  { name: "Services", href: "/services" },
   { name: "About", href: "/about" },
-  { name: "Case Studies", href: "/case-studies" },
+  { name: "Case Studies", href: "/project" },
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/#contact" },
 ]
+
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false)

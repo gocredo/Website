@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion"
 import { Search, BarChart, Share2, Globe, TrendingUp, Mail } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../components/ui/card"
 
 const services = [
   {

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { Button } from "../../components/ui/button"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { ArrowRight } from "lucide-react"
+import { Button } from "../../components/ui/button";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
-export function Cta() {
+export default function ContactCTA() {
   return (
     <section className="py-20">
       <div className="container mx-auto px-4">
@@ -22,25 +22,23 @@ export function Cta() {
 
           <div className="relative py-16 px-8 md:py-24 md:px-12 text-center">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 max-w-3xl mx-auto">
-              Ready to Accelerate Your Business Growth?
+              Ready to Transform Your Digital Presence?
             </h2>
             <p className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-8">
-              Get in touch today and discover how our digital marketing expertise can help you achieve your business
-              goals.
+              Let’s work together to create a digital experience that drives results for your business.
             </p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Button asChild size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
-                <Link href="/#contact">
-                  Get Started <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                <Link href="/case-studies">View Case Studies</Link>
-              </Button>
-            </div>
+            <Button
+              asChild
+              size="lg"
+              className="bg-white text-purple-600 hover:bg-gray-100"
+            >
+              <Link href="/#contact">
+                Get in Touch <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
           </div>
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
