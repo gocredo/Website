@@ -1,0 +1,372 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AboutPage {
+  id          String   @id
+  businessId  String   @unique
+  description String?
+  mission     String?
+  vision      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  Business    Business @relation(fields: [businessId], references: [id])
+}
+
+model Appointment {
+  id            String            @id
+  customerName  String
+  customerPhone String?
+  customerEmail String?
+  dateTime      DateTime
+  service       String
+  status        AppointmentStatus @default(PENDING)
+  businessId    String
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime
+  Business      Business          @relation(fields: [businessId], references: [id])
+}
+
+model AuditLog {
+  id         String   @id
+  action     String
+  userId     String
+  businessId String
+  timestamp  DateTime @default(now())
+  Business   Business @relation(fields: [businessId], references: [id])
+  User       User     @relation(fields: [userId], references: [id])
+}
+
+model Blog {
+  id         String   @id
+  title      String
+  content    String
+  imageUrl   String?
+  businessId String
+  createdAt  DateTime @default(now())
+  Business   Business @relation(fields: [businessId], references: [id])
+}
+
+model Booking {
+  id           String   @id
+  dateTime     DateTime
+  customerName String
+  service      String
+  businessId   String
+  Business     Business @relation(fields: [businessId], references: [id])
+}
+
+model Branch {
+  id         String   @id
+  name       String
+  address    String
+  city       String
+  state      String
+  pincode    String
+  phone      String?
+  businessId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  Business   Business @relation(fields: [businessId], references: [id])
+}
+
+model Business {
+  id                 String            @id
+  name               String
+  category           BusinessCategory
+  description        String?
+  address            String?
+  phone              String?
+  websiteUrl         String?
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime
+  businessSettingsId String?
+  AboutPage          AboutPage?
+  Appointment        Appointment[]
+  AuditLog           AuditLog[]
+  Blog               Blog[]
+  Booking            Booking[]
+  Branch             Branch[]
+  BusinessSettings   BusinessSettings?
+  CustomerUser       CustomerUser[]
+  Donation           Donation[]
+  Inquiry            Inquiry[]
+  Invitation         Invitation[]
+  MediaGallery       MediaGallery[]
+  Menu               Menu[]
+  Order              Order[]
+  Payment            Payment[]
+  Product            Product[]
+  Property           Property[]
+  Review             Review[]
+  Subscription       Subscription[]
+  User               User[]
+}
+
+model BusinessInquiry {
+  id      String @id
+  name    String
+  email   String
+  phone   String
+  message String
+}
+
+model BusinessSettings {
+  id         String   @id
+  businessId String   @unique
+  currency   String   @default("USD")
+  timezone   String?
+  logoUrl    String?
+  Business   Business @relation(fields: [businessId], references: [id])
+}
+
+model CustomerUser {
+  id         String   @id
+  name       String
+  email      String?
+  phone      String?
+  businessId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  Business   Business @relation(fields: [businessId], references: [id])
+  Order      Order[]
+}
+
+model Donation {
+  id         String   @id
+  donorName  String
+  amount     Float
+  date       DateTime
+  businessId String
+  Business   Business @relation(fields: [businessId], references: [id])
+}
+
+model Inquiry {
+  id         String   @id
+  name       String
+  email      String
+  message    String
+  businessId String
+  Business   Business @relation(fields: [businessId], references: [id])
+}
+
+model Invitation {
+  id         String   @id
+  email      String
+  role       String
+  token      String   @unique
+  businessId String
+  expiresAt  DateTime
+  Business   Business @relation(fields: [businessId], references: [id])
+}
+
+model MediaGallery {
+  id         String   @id
+  title      String
+  mediaUrls  String[]
+  businessId String
+  Business   Business @relation(fields: [businessId], references: [id])
+}
+
+model Menu {
+  id         String     @id
+  title      String
+  businessId String
+  Business   Business   @relation(fields: [businessId], references: [id])
+  MenuItem   MenuItem[]
+}
+
+model MenuItem {
+  id       String  @id
+  name     String
+  price    Float
+  imageUrl String?
+  menuId   String
+  Menu     Menu    @relation(fields: [menuId], references: [id])
+}
+
+model Order {
+  id             String        @id
+  type           OrderType
+  items          Json
+  totalAmount    Float
+  status         OrderStatus   @default(PENDING)
+  customerUserId String?
+  businessId     String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime
+  Business       Business      @relation(fields: [businessId], references: [id])
+  CustomerUser   CustomerUser? @relation(fields: [customerUserId], references: [id])
+}
+
+model Payment {
+  id                String        @id
+  amount            Float
+  method            PaymentMethod
+  status            PaymentStatus @default(PENDING)
+  initiatedAt       DateTime
+  verifiedAt        DateTime?
+  paidAt            DateTime?
+  referenceId       String?
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  razorpaySignature String?
+  receiptURL        String?
+  customerRole      Role
+  customerName      String?
+  customerEmail     String?
+  businessId        String
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime
+  Business          Business      @relation(fields: [businessId], references: [id])
+}
+
+model Plan {
+  id           String         @id
+  name         String
+  description  String?
+  price        Float
+  features     String[]
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime
+  Subscription Subscription[]
+}
+
+model Product {
+  id          String   @id
+  name        String
+  price       Float
+  stock       Int?
+  tags        String[]
+  description String?
+  imageUrl    String
+  businessId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  Business    Business @relation(fields: [businessId], references: [id])
+}
+
+model Property {
+  id          String   @id
+  title       String
+  description String
+  price       Float
+  location    String
+  imageUrl    String?
+  businessId  String
+  Business    Business @relation(fields: [businessId], references: [id])
+}
+
+model Review {
+  id         String   @id
+  customer   String
+  rating     Int
+  comment    String?
+  businessId String
+  Business   Business @relation(fields: [businessId], references: [id])
+}
+
+model Subscription {
+  id          String             @id
+  businessId  String
+  planId      String
+  startDate   DateTime           @default(now())
+  endDate     DateTime?
+  status      SubscriptionStatus @default(ACTIVE)
+  lastRenewed DateTime?
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime
+  Business    Business           @relation(fields: [businessId], references: [id])
+  Plan        Plan               @relation(fields: [planId], references: [id])
+}
+
+model User {
+  id          String     @id
+  email       String     @unique
+  name        String
+  role        Role       @default(BUSINESS_OWNER)
+  businessId  String?
+  websiteURLs String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime
+  clerkId     String     @unique
+  AuditLog    AuditLog[]
+  Business    Business?  @relation(fields: [businessId], references: [id])
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum BusinessCategory {
+  RESTAURANT
+  SALON
+  BOUTIQUE
+  TIFFIN
+  GYM
+  EVENT_PLANNER
+  COACHING
+  INTERIOR
+  PHOTOGRAPHER
+  REPAIR_SERVICE
+  REAL_ESTATE
+  PET_SERVICE
+  HANDICRAFT
+  FLORIST
+  CLINIC
+  TRAVEL
+  FREELANCER
+  BAKER
+  NGO
+  JEWELLERY
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  CANCELLED
+  FULFILLED
+}
+
+enum OrderType {
+  PRODUCT
+  MENU_ITEM
+  APPOINTMENT
+  DONATION
+  CUSTOM
+}
+
+enum PaymentMethod {
+  CARD
+  UPI
+  CASH
+  WALLET
+  NETBANKING
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum Role {
+  ADMIN
+  BUSINESS_OWNER
+  STAFF
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+}

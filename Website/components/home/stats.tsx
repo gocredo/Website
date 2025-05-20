@@ -41,7 +41,14 @@ export function Stats() {
   )
 }
 
-function StatCounter({ value, label, suffix = "", delay = 0 }) {
+type StatCounterProps = {
+  value: number
+  label: string
+  suffix?: string
+  delay?: number
+}
+
+function StatCounter({ value, label, suffix = "", delay = 0 }: StatCounterProps) {
   const [count, setCount] = useState(0)
   const { ref, inView } = useInView({
     threshold: 0.3,
