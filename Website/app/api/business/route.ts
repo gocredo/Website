@@ -15,7 +15,7 @@ export async function GET() {
     const user = await prisma.user.findUnique({
       where: { clerkId: userId },
       include: {
-        business: true,
+        Business: true,
       },
     });
      if (!user) {
@@ -24,7 +24,7 @@ export async function GET() {
         { status: 404 }
       );
     }
-    return NextResponse.json({ business: user.business }, { status: 200 });
+    return NextResponse.json({ business: user.Business }, { status: 200 });
   } catch (error) {
     console.error("Error in business API:", error);
     return NextResponse.json(

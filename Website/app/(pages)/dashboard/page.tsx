@@ -1,8 +1,12 @@
+// app/(pages)/dashboard/page.tsx
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { toast } from "../../../components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 interface Business {
   id: string;
@@ -13,38 +17,83 @@ interface Business {
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();
+  const { getToken } = useAuth();
+  const router = useRouter();
   const [business, setBusiness] = useState<Business | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isLoaded || !user) return;
 
+    // Redirect to onboarding if no businessId
+    if (!user.publicMetadata.businessId) {
+      router.push("/onboarding");
+      return;
+    }
+
     async function fetchBusinessData() {
       try {
-        const response = await fetch("/api/business");
-        
-        if (!response.ok) {
-          throw new Error("Failed to fetch business data");
+        const token = await getToken({ template: "goCredo1" });
+        if (!token) {
+          throw new Error("Failed to get authentication token");
         }
-        
+
+        const response = await fetch("/api/business", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || `HTTP error ${response.status}`);
+        }
+
         const data = await response.json();
+        if (!data.business) {
+          throw new Error("No business found");
+        }
+
         setBusiness(data.business);
-      } catch (error) {
-        console.error("Error fetching business data:", error);
+      } catch (err) {
+        console.error("Error fetching business data:", err);
+        const errorMessage =
+          typeof err === "object" && err !== null && "message" in err
+            ? String((err as { message?: unknown }).message)
+            : "Failed to load business data";
+        setError(errorMessage);
+        toast({
+          title: "Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
       } finally {
         setLoading(false);
       }
     }
-fetchBusinessData();
-  }, [isLoaded, user]);
+
+    fetchBusinessData();
+  }, [isLoaded, user, getToken, router]);
 
   if (!isLoaded || loading) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+        <Loader2 className="h-8 w-8 animate-spin text-white" />
       </div>
     );
   }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+        <p className="text-red-500">Error: {error}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12 px-4">
       <div className="max-w-7xl mx-auto">
@@ -54,9 +103,12 @@ fetchBusinessData();
           transition={{ duration: 0.5 }}
         >
           <h1 className="text-3xl font-bold mb-6">
-            Welcome to your <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Dashboard</span>
+            Welcome to your{" "}
+            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Dashboard
+            </span>
           </h1>
-          
+
           {business ? (
             <div className="bg-gray-800 rounded-lg p-6 mb-8">
               <h2 className="text-xl font-semibold mb-2">{business.name}</h2>
@@ -80,20 +132,16 @@ fetchBusinessData();
               </a>
             </div>
           )}
-          
-          {/* Dashboard content will go here */}
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Dashboard widgets */}
             <div className="bg-gray-800 rounded-lg p-6">
               <h3 className="text-lg font-medium mb-3">Quick Stats</h3>
               <p className="text-gray-400">Coming soon...</p>
             </div>
-            
             <div className="bg-gray-800 rounded-lg p-6">
               <h3 className="text-lg font-medium mb-3">Recent Activity</h3>
               <p className="text-gray-400">Coming soon...</p>
             </div>
-            
             <div className="bg-gray-800 rounded-lg p-6">
               <h3 className="text-lg font-medium mb-3">Settings</h3>
               <p className="text-gray-400">Coming soon...</p>

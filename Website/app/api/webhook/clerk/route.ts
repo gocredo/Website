@@ -1,104 +1,162 @@
-import { NextRequest, NextResponse } from "next/server";
-import { Webhook } from 'svix';
-import { headers } from 'next/headers';
-import { WebhookEvent } from '@clerk/nextjs/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+// app/api/webhook/clerk/route.ts
+import { NextResponse } from "next/server";
+import { Webhook } from "svix";
+import { headers } from "next/headers";
+import { WebhookEvent } from "@clerk/nextjs/server";
+import { v4 as uuidv4 } from "uuid"; 
+import prisma from "../../../../lib/prisma";
 
 export async function POST(req: Request) {
-    const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
-  
-    if (!WEBHOOK_SECRET) {
-        throw new Error('Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local');
-    }
-    const headerPayload = headers();
-  const svix_id = (await headerPayload).get("svix-id");
-  const svix_timestamp = (await headerPayload).get("svix-timestamp");
-  const svix_signature = (await headerPayload).get("svix-signature");
-  if (!svix_id || !svix_timestamp || !svix_signature) {
-    return new Response('Error missing svix headers', { status: 400 });
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
+
+  if (!WEBHOOK_SECRET) {
+    console.error("CLERK_WEBHOOK_SECRET is missing");
+    return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
   }
 
+  // Extract Svix headers
+  const headerPayload = await headers();
+  const svix_id = headerPayload.get("svix-id");
+  const svix_timestamp = headerPayload.get("svix-timestamp");
+  const svix_signature = headerPayload.get("svix-signature");
+
+  if (!svix_id || !svix_timestamp || !svix_signature) {
+    console.error("Missing Svix headers", { svix_id, svix_timestamp, svix_signature });
+    return NextResponse.json({ error: "Missing Svix headers" }, { status: 400 });
+  }
+
+  // Read and verify webhook payload
   const payload = await req.json();
   const body = JSON.stringify(payload);
   const wh = new Webhook(WEBHOOK_SECRET);
   let evt: WebhookEvent;
-  try {
-    evt = wh.verify(body, {
-      "svix-id": svix_id,
-      "svix-timestamp": svix_timestamp,
-      "svix-signature": svix_signature,
-    }) as WebhookEvent;
-  } catch (err) {
-    console.error('Error verifying webhook:', err);
-    return new Response('Error verifying webhook', { status: 400 });
-  }
-  const eventType = evt.type;
-  if (eventType === 'user.created') {
-    const { id, email_addresses, first_name, last_name } = evt.data;
-    const emailObject = email_addresses?.[0];
-    const email = emailObject?.email_address;
-    if (!email) {
-      return new Response('No email found', { status: 400 });
-    }
-    const name = [first_name, last_name].filter(Boolean).join(' ');
-    
+
+  // Bypass verification in development
+  if (process.env.NODE_ENV === "development") {
+    console.warn("Bypassing webhook verification in development");
+    evt = payload as WebhookEvent;
+  } else {
     try {
-      await prisma.user.create({
+      evt = wh.verify(body, {
+        "svix-id": svix_id,
+        "svix-timestamp": svix_timestamp,
+        "svix-signature": svix_signature,
+      }) as WebhookEvent;
+    } catch (err) {
+      console.error("Webhook verification failed:", err);
+      return NextResponse.json({ error: "Webhook verification failed" }, { status: 400 });
+    }
+  }
+
+  const eventType = evt.type;
+  console.log("Received webhook event:", eventType, "Payload:", payload);
+
+  if (eventType === "user.created") {
+    const { id, email_addresses, first_name, last_name } = evt.data;
+    const email = email_addresses?.[0]?.email_address;
+
+    if (!email) {
+      console.error("No email found in user.created event", evt.data);
+      return NextResponse.json({ error: "No email found" }, { status: 400 });
+    }
+
+    const name = [first_name, last_name].filter(Boolean).join(" ") || "Anonymous User";
+
+    try {
+      // Ensure idempotency
+      const existingUser = await prisma.user.findUnique({ where: { clerkId: id } });
+      if (existingUser) {
+        console.log(`User with clerkId ${id} already exists`);
+        return NextResponse.json({ message: "User already exists" }, { status: 200 });
+      }
+
+      const user = await prisma.user.create({
         data: {
+          id: uuidv4(), // Generate unique ID
           clerkId: id,
-          email: email,
-          name: name || 'Anonymous User',
-          role: 'BUSINESS_OWNER', // Default role
+          email,
+          name,
+          role: "BUSINESS_OWNER",
+          websiteURLs: [], // Required field
+          updatedAt: new Date(), // Required field
+          Business: {
+            create: {
+              id: uuidv4(), // Generate Business ID
+              name: `${name}'s Business`,
+              category: "BOUTIQUE",
+              updatedAt: new Date(), // Required for Business
+            },
+          },
         },
       });
-      
-      return new Response('User created', { status: 201 });
+
+      // Log to AuditLog
+      await prisma.auditLog.create({
+        data: {
+          id: uuidv4(), // Generate AuditLog ID
+          action: "USER_CREATED",
+          userId: id,
+          businessId: user.businessId || "N/A",
+          timestamp: new Date(),
+        },
+      });
+
+      console.log(`User created: ${id}, ${email}`);
+      return NextResponse.json({ message: "User created" }, { status: 201 });
     } catch (error) {
-      console.error('Error creating user:', error);
-      return new Response('Error creating user', { status: 500 });
+      console.error("Error creating user:", error);
+      return NextResponse.json({ error: "Error creating user" }, { status: 500 });
     }
   }
-  if (eventType === 'user.updated') {
+
+  if (eventType === "user.updated") {
     const { id, email_addresses, first_name, last_name } = evt.data;
-    const emailObject = email_addresses?.[0];
-    const email = emailObject?.email_address;
+    const email = email_addresses?.[0]?.email_address;
 
     if (!email) {
-      return new Response('No email found', { status: 400 });
+      console.error("No email found in user.updated event", evt.data);
+      return NextResponse.json({ error: "No email found" }, { status: 400 });
     }
 
-    const name = [first_name, last_name].filter(Boolean).join(' ');
-    
+    const name = [first_name, last_name].filter(Boolean).join(" ") || "Anonymous User";
+
     try {
       await prisma.user.update({
         where: { clerkId: id },
         data: {
-          email: email,
-          name: name || 'Anonymous User',
+          email,
+          name,
+          updatedAt: new Date(), // Required for updates
         },
       });
-
-      return new Response('User updated', { status: 200 });
+      console.log(`User updated: ${id}, ${email}`);
+      return NextResponse.json({ message: "User updated" }, { status: 200 });
     } catch (error) {
-      console.error('Error updating user:', error);
-      return new Response('Error updating user', { status: 500 });
+      console.error("Error updating user:", error);
+      return NextResponse.json({ error: "Error updating user" }, { status: 500 });
     }
   }
-  if (eventType === 'user.deleted') {
+
+  if (eventType === "user.deleted") {
     const { id } = evt.data;
-    
+
     try {
       await prisma.user.delete({
         where: { clerkId: id },
       });
-      
-      return new Response('User deleted', { status: 200 });
+      console.log(`User deleted: ${id}`);
+      return NextResponse.json({ message: "User deleted" }, { status: 200 });
     } catch (error) {
-      console.error('Error deleting user:', error);
-      return new Response('Error deleting user', { status: 500 });
+      console.error("Error deleting user:", error);
+      return NextResponse.json({ error: "Error deleting user" }, { status: 500 });
     }
   }
-  return new Response('Webhook received', { status: 200 });
+
+  console.log(`Unhandled event type: ${eventType}`);
+  return NextResponse.json({ message: "Webhook received but not processed" }, { status: 200 });
 }
+
+// Cleanup Prisma on server shutdown
+process.on("SIGTERM", async () => {
+  await prisma.$disconnect();
+});
