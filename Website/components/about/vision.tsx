@@ -4,24 +4,28 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
 import { Globe, Sparkles, Target } from "lucide-react";
 
+interface VisionProps {
+  mission?: string;
+  vision?: string;
+}
+
 const visionPoints = [
   {
     icon: <Target className="h-10 w-10 text-purple-400" />,
-    title: "Our Mission",
-    description:
-      "To empower businesses with creative digital solutions that drive measurable growth and success.",
+    title: 'Our Mission',
+    description: (mission?: string) =>
+      mission || 'No mission statement available',
   },
   {
     icon: <Globe className="h-10 w-10 text-purple-400" />,
-    title: "Our Vision",
-    description:
-      "To be the leading creative studio, transforming the digital landscape with innovative designs.",
+    title: 'Our Vision',
+    description: (vision?: string) =>
+      vision || 'No vision statement available',
   },
   {
     icon: <Sparkles className="h-10 w-10 text-purple-400" />,
-    title: "Our Values",
-    description:
-      "Creativity, integrity, and collaboration are at the heart of everything we do.",
+    title: 'Our Values',
+    description: 'Creativity, integrity, and collaboration are at the heart of everything we do.',
   },
 ];
 
@@ -40,7 +44,7 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
-export default function Vision() {
+export default function Vision({ mission, vision }: VisionProps) {
   return (
     <section className="py-20 bg-gray-900/30">
       <div className="container mx-auto px-4">
@@ -75,7 +79,11 @@ export default function Vision() {
                   <CardTitle className="text-xl font-bold">{point.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-400 text-base">{point.description}</p>
+                  <p className="text-gray-400 text-base">
+                    {typeof point.description === 'function'
+                      ? point.description(point.title === 'Our Mission' ? mission : point.title === 'Our Vision' ? vision : undefined)
+                      : point.description}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
