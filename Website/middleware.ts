@@ -7,7 +7,8 @@ const publicRoutes = createRouteMatcher([
   "/about",
   "/services",
   "/blog",
-  "/project"
+  "/project",
+  
 ]);
 
 export default clerkMiddleware({
