@@ -1,6 +1,6 @@
 
     "use client";
-
+     import dynamic from 'next/dynamic';
     import { useState, useMemo, useCallback } from "react";
     import { motion } from "framer-motion";
     import {
@@ -31,10 +31,33 @@
     import DatePicker from "react-datepicker";
     import "react-datepicker/dist/react-datepicker.css";
     import Papa from "papaparse";
-    import html2pdf from "html2pdf.js";
+    const html2pdf = dynamic(() => import("html2pdf.js"), { ssr: false }) as unknown as typeof import("html2pdf.js");
+   
     import { Pie, Line } from "react-chartjs-2";
-    import "chart.js/auto"; 
+    import {
+      Chart as ChartJS,
+    Tooltip,
+    Legend,
+    Title,
+    Filler,
+    LineElement,
+    PointElement,
+    ArcElement,
+    LinearScale,
+    CategoryScale,
+    } from "chart.js";
 import { Badge } from "components/ui/badge";
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale, // Required for the y-axis in Line charts
+  CategoryScale, // Required for the x-axis in Line charts
+  Title,
+  Tooltip,
+  ArcElement,
+  Legend,
+  Filler
+);
     // Types
     type ActionType =
       | "LOGIN"
