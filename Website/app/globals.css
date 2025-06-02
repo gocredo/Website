@@ -91,3 +91,18 @@
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
+.react-datepicker {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  color: white;
+}
+.react-datepicker__header {
+  background-color: #111827;
+  border-bottom: 1px solid #374151;
+}
+.react-datepicker__day, .react-datepicker__day-name {
+  color: white;
+}
+.react-datepicker__day--selected {
+  background-color: #A855F7;
+}
