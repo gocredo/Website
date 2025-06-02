@@ -3,7 +3,6 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
-
   Badge,
 } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
@@ -38,11 +37,10 @@ import {
   SelectValue,
 } from "../../../../components/ui/select";
 import { Dialog, DialogContent, DialogTrigger } from "../../../../components/ui/dialog";
-import { Plus, Download, Edit, Trash, Send, CreditCard, FileText, MoreHorizontal } from "lucide-react";
+import { Plus, Download, Edit, Trash, Send, CreditCard, MoreHorizontal } from "lucide-react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Papa from "papaparse";
-import html2pdf from "html2pdf.js";
 
 // Types
 type SortKey = "id" | "businessId" | "amount" | "status" | "createdAt" | "dueDate";
@@ -214,45 +212,6 @@ export default function Invoices() {
     link.click();
     document.body.removeChild(link);
   }, [filteredInvoices]);
-
-  const generateInvoicePDF = useCallback((invoice: Invoice) => {
-    const template = invoiceTemplates[invoice.template];
-    const element = document.createElement("div");
-    element.innerHTML = `
-      <div style="font-family: Arial; padding: 20px; background: #fff; color: #000;">
-        <img src="${template.logo}" style="max-width: 150px;" />
-        <h2 style="color: ${template.color};">Invoice #${invoice.id}</h2>
-        <p><strong>Client:</strong> ${data.clients.find((c) => c.id === invoice.clientId)?.name}</p>
-        <p><strong>Date:</strong> ${invoice.createdAt}</p>
-        <p><strong>Due Date:</strong> ${invoice.dueDate}</p>
-        <table style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr style="background-color: ${template.color}; color: white;">
-              <th style="padding: 8px;">Description</th>
-              <th style="padding: 8px;">Qty</th>
-              <th style="padding: 8px;">Price</th>
-              <th style="padding: 8px;">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${invoice.items.map((item) => `
-              <tr>
-                <td style="padding: 8px; border: 1px solid #ddd;">${item.description}</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${item.quantity}</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">₹${item.price}</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">₹${item.quantity * item.price}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-        <p><strong>Subtotal:</strong> ₹${invoice.amount}</p>
-        <p><strong>Tax (18%):</strong> ₹${(invoice.amount * invoice.tax / 100).toFixed(2)}</p>
-        <p><strong>Total:</strong> ₹${(invoice.amount * (1 + invoice.tax / 100)).toFixed(2)}</p>
-        <p>${template.terms}</p>
-      </div>
-    `;
-    html2pdf().from(element).save(`invoice_${invoice.id}.pdf`);
-  }, []);
 
   return (
     <div className="space-y-6 p-6">
@@ -448,9 +407,6 @@ export default function Invoices() {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="bg-gray-800 border-gray-700 text-white">
-                      <DropdownMenuItem onClick={() => generateInvoicePDF(invoice)}>
-                        <FileText className="mr-2 h-4 w-4" /> View PDF
-                      </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => alert(`Editing invoice ${invoice.id}`)}>
                         <Edit className="mr-2 h-4 w-4" /> Edit
                       </DropdownMenuItem>

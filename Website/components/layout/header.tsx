@@ -17,7 +17,6 @@ const navItems = [
   { name: "Blog", href: "/blog" },
   { name: "Contact", href: "/#contact" },
   { name: "AdminDashboard", href: "/adminDashboard" },
-  { name: "Admin", href: "/admin" },
 ];
 
 // Add authenticated nav items
