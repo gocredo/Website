@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://localhost:4000',//process.env.NEXT_PUBLIC_BASE_URL || 
+  baseURL: process.env.NEXT_PUBLIC_DEPLOYED_URL , 
   headers: {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`,
@@ -22,7 +22,7 @@ interface AboutPageResponse {
   };
 }
 
-export async function getAboutPage(businessId: string): Promise<AboutPageResponse['data']['getAboutPage']> {
+export async function getAboutPage(businessId: string): Promise<AboutPageResponse['data']['getAboutPage'] |null> {
   const query = `
     query GetAboutPage {
       getAboutPage(businessId: "${businessId}") {
@@ -42,6 +42,6 @@ export async function getAboutPage(businessId: string): Promise<AboutPageRespons
     return response.data.data.getAboutPage;
   } catch (error) {
     console.error('Error fetching About page data:', error);
-    throw new Error('Failed to fetch About page data');
+    return null;
   }
 }

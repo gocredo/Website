@@ -21,26 +21,25 @@ interface AboutPageData {
 export default function About() {
   const [aboutData, setAboutData] = useState<AboutPageData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await getAboutPage('f6d61837-89d1-412b-a967-052913e92f31');
-        setAboutData(data);
+        setAboutData(data||null);
         setLoading(false);
       } catch (err) {
-        setError('Failed to load about page data');
+        console.error('Error fetching About page data:',err);
+        // setError('Failed to load about page data');
+        setAboutData(null);
         setLoading(false);
-        console.error(err);
       }
     };
 
     fetchData();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       <Header />
