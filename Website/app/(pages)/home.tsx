@@ -1,6 +1,6 @@
 "use client"
 import { Hero } from "../../components/home/hero"
-import { Services } from "../../components/home/services"
+import { ServicesTab } from "../../components/common/services"
 import { Features } from "../../components/home/features"
 import { TestimonialCarousel } from "../../components/home/testimonial-carousel"
 import { Stats } from "../../components/home/stats"
@@ -22,7 +22,7 @@ export default function Home() {
       <Header />
       <Hero />
       <Clients />
-      <Services />
+      <ServicesTab />
       <Features />
       <Stats />
       <TestimonialCarousel />

@@ -6,6 +6,7 @@ import {Footer} from "../../../components/layout/footer";
 import ServiceBlocks from "../../../components/services/service-blocks";
 import AppointmentForm from "../../../components/services/appointment-form";
 import Process from "../../../components/common/process";
+import {ServicesTab} from "../../../components/common/services";
 import {TestimonialCarousel} from "../../../components/home/testimonial-carousel";
 import FAQ from "../../../components/common/FAQ";
 
@@ -32,6 +33,7 @@ export default function Services() {
         </motion.div>
 
         <ServiceBlocks />
+        <ServicesTab />
         <AppointmentForm />
         <Process />
         <TestimonialCarousel />

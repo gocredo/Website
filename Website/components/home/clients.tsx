@@ -1,39 +1,41 @@
-"use client"
+"use client";
+import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
-import { motion } from "framer-motion"
-import { useRef, useEffect } from "react"
+export function Clients({ data = [] }) {
+  const containerRef = useRef<HTMLDivElement>(null);
 
-export function Clients() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const defaultTools = [
+    { name: "Google Ads", logo: "/logos/google-ads.png" },
+    { name: "Meta Business", logo: "/logos/meta.png" },
+    { name: "HubSpot", logo: "/logos/hubspot.png" },
+    { name: "SEMRush", logo: "/logos/semrush.png" },
+    { name: "Mailchimp", logo: "/logos/mailchimp.png" },
+  ];
+
+  const tools = data.length > 0 ? data : defaultTools;
+  const duplicatedTools = [...tools, ...tools]; 
 
   useEffect(() => {
-    const scrollContainer = containerRef.current
-    if (!scrollContainer) return
+    const container = containerRef.current;
+    if (!container) return;
 
-    const scrollWidth = scrollContainer.scrollWidth
-    const clientWidth = scrollContainer.clientWidth
-
-    if (scrollWidth <= clientWidth) return
-
-    let scrollPos = 0
-    const maxScroll = scrollWidth - clientWidth
-    const speed = 0.5
+    let animationId: number;
+    const speed = 0.5;
 
     const scroll = () => {
-      scrollPos += speed
-      if (scrollPos >= maxScroll) {
-        scrollPos = 0
+      if (!container) return;
+      container.scrollLeft += speed;
+      if (container.scrollLeft >= container.scrollWidth / 2) {
+        container.scrollLeft = 0;
       }
-      if (scrollContainer) {
-        scrollContainer.scrollLeft = scrollPos
-      }
-      requestAnimationFrame(scroll)
-    }
 
-    const animation = requestAnimationFrame(scroll)
+      animationId = requestAnimationFrame(scroll);
+    };
 
-    return () => cancelAnimationFrame(animation)
-  }, [])
+    animationId = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(animationId);
+  }, []);
 
   return (
     <section className="py-12 bg-gray-900/50 border-y border-gray-800">
@@ -44,22 +46,38 @@ export function Clients() {
           transition={{ duration: 0.5 }}
           className="text-center mb-8"
         >
-          <h2 className="text-lg font-medium text-gray-400">Trusted by innovative companies worldwide</h2>
+          <h2 className="text-lg font-medium text-gray-400">Trusted Tools & Partners</h2>
         </motion.div>
 
-        <div className="relative">
-          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-gray-900 to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-900 to-transparent z-10"></div>
+        <div className="relative overflow-hidden">
+          <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-gray-900 to-transparent z-10" />
+          <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-gray-900 to-transparent z-10" />
 
-          <div ref={containerRef} className="flex overflow-x-hidden space-x-12 py-4">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div key={i} className="flex-shrink-0 h-12 w-32 bg-gray-800 rounded-md flex items-center justify-center">
-                <div className="text-xl font-bold text-gray-500 opacity-70">Client {i + 1}</div>
+          <div
+            ref={containerRef}
+            className="flex whitespace-nowrap overflow-hidden space-x-12 py-4"
+          >
+            {duplicatedTools.map((tool, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 h-16 w-36 bg-gray-800 rounded-md flex items-center justify-center p-2"
+              >
+                {tool.logo ? (
+                  <img
+                    src={tool.logo}
+                    alt={tool.name}
+                    className="max-h-10 max-w-[120px] object-contain"
+                  />
+                ) : (
+                  <div className="text-xl font-bold text-gray-500 opacity-70">
+                    {tool.name}
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

@@ -8,21 +8,65 @@ import { Label } from "../../components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select"
 import { motion } from "framer-motion"
 import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react"
+export interface ContactFormData {
+  name: string;
+  email: string;
+  phone?: string;
+  service?: string;
+  message: string;
+}
 
 export function ContactForm() {
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [formData, setFormData] = useState<ContactFormData>({
+    name: "",
+    email: "",
+    phone: "",
+    service: "",
+    message: "",
+  });
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleServiceChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, service: value }));
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500))
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-  }
+      if (!response.ok) {
+        const { error } = await response.json();
+        throw new Error(error || "Failed to send message");
+      }
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      // Reset form after submission
+      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+    } catch (err) {
+      setIsSubmitting(false);
+      setError(err instanceof Error ? err.message : "An unexpected error occurred");
+    }
+  };
 
   return (
     <section id="contact" className="py-20 bg-gray-900/30">
@@ -52,7 +96,6 @@ export function ContactForm() {
           >
             <div className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700 h-full">
               <h3 className="text-2xl font-bold mb-6">Get in Touch</h3>
-
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
                   <Mail className="h-6 w-6 text-purple-400 mt-1 flex-shrink-0" />
@@ -61,7 +104,6 @@ export function ContactForm() {
                     <p className="text-gray-400">info@gocredo.com</p>
                   </div>
                 </div>
-
                 <div className="flex items-start space-x-4">
                   <Phone className="h-6 w-6 text-purple-400 mt-1 flex-shrink-0" />
                   <div>
@@ -69,7 +111,6 @@ export function ContactForm() {
                     <p className="text-gray-400">+1 (555) 123-4567</p>
                   </div>
                 </div>
-
                 <div className="flex items-start space-x-4">
                   <MapPin className="h-6 w-6 text-purple-400 mt-1 flex-shrink-0" />
                   <div>
@@ -82,10 +123,10 @@ export function ContactForm() {
                   </div>
                 </div>
               </div>
-
               <div className="mt-12">
                 <h4 className="text-xl font-bold mb-4">Follow Us</h4>
                 <div className="flex space-x-4">
+                  {/* Social media links remain unchanged */}
                   <a href="#" className="bg-gray-700 hover:bg-purple-500 transition-colors p-3 rounded-full">
                     <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path
@@ -143,17 +184,28 @@ export function ContactForm() {
                 <p className="text-gray-400 mb-8 max-w-md">
                   Thank you for reaching out. Our team will get back to you within 24 hours.
                 </p>
-                <Button onClick={() => setIsSubmitted(false)} className="bg-purple-500 hover:bg-purple-600">
+                <Button
+                  onClick={() => setIsSubmitted(false)}
+                  className="bg-purple-500 hover:bg-purple-600"
+                >
                   Send Another Message
                 </Button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="bg-gray-800/50 rounded-2xl p-8 border border-gray-700">
+                {error && (
+                  <div className="mb-4 p-3 bg-red-500/10 text-red-400 rounded-lg">
+                    {error}
+                  </div>
+                )}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                   <div className="space-y-2">
                     <Label htmlFor="name">Full Name</Label>
                     <Input
                       id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
                       placeholder="John Doe"
                       required
                       className="bg-gray-700/50 border-gray-600 focus:border-purple-500"
@@ -163,7 +215,10 @@ export function ContactForm() {
                     <Label htmlFor="email">Email Address</Label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
                       placeholder="john@example.com"
                       required
                       className="bg-gray-700/50 border-gray-600 focus:border-purple-500"
@@ -173,13 +228,16 @@ export function ContactForm() {
                     <Label htmlFor="phone">Phone Number</Label>
                     <Input
                       id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleInputChange}
                       placeholder="+1 (555) 123-4567"
                       className="bg-gray-700/50 border-gray-600 focus:border-purple-500"
                     />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="service">Service Interested In</Label>
-                    <Select>
+                    <Select onValueChange={handleServiceChange} value={formData.service}>
                       <SelectTrigger className="bg-gray-700/50 border-gray-600 focus:border-purple-500">
                         <SelectValue placeholder="Select a service" />
                       </SelectTrigger>
@@ -194,18 +252,19 @@ export function ContactForm() {
                     </Select>
                   </div>
                 </div>
-
                 <div className="space-y-2 mb-6">
                   <Label htmlFor="message">Your Message</Label>
                   <Textarea
                     id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
                     placeholder="Tell us about your project..."
                     rows={5}
                     required
                     className="bg-gray-700/50 border-gray-600 focus:border-purple-500"
                   />
                 </div>
-
                 <div className="flex justify-end">
                   <Button
                     type="submit"
@@ -231,7 +290,7 @@ export function ContactForm() {
                           <path
                             className="opacity-75"
                             fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291Robinhood291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                           ></path>
                         </svg>
                         Sending...
@@ -249,5 +308,5 @@ export function ContactForm() {
         </div>
       </div>
     </section>
-  )
+  );
 }

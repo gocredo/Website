@@ -3,22 +3,21 @@
 import { useState, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import {
-
   Badge,
 } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import { Checkbox,} from "../../../../components/ui/checkbox";
-import {  Input,
-  } from "../../../../components/ui/input";
+import { Input,
+} from "../../../../components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle,
-  } from "../../../../components/ui/card";
+} from "../../../../components/ui/card";
 import { Drawer,
   DrawerContent,
   DrawerHeader,
   DrawerTitle,
   DrawerDescription,
   DrawerFooter, } from "../../../../components/ui/drawer";
-import {  DropdownMenu,
+import { DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,} from "../../../../components/ui/dropdown-menu";
@@ -42,7 +41,6 @@ import { Plus, Download, Edit, Trash, FileText, MoreHorizontal } from "lucide-re
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Papa from "papaparse";
-import html2pdf from "html2pdf.js";
 import { Line, Pie } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -280,26 +278,6 @@ export default function WebsiteManagement() {
     URL.revokeObjectURL(link.href);
   }, [filteredWebsites]);
 
-  const generateWebsiteReportPDF = useCallback((website: Website) => {
-    const tenant = data.tenants.find((t) => t.id === website.tenantId);
-    const element = document.createElement("div");
-    element.innerHTML = `
-      <div style="font-family: Arial; padding: 20px; background: #fff; color: #000;">
-        <h2 style="color: #A855F7;">GoCredo Website Report: ${website.url}</h2>
-        <p><strong>Tenant:</strong> ${tenant?.name}</p>
-        <p><strong>URL:</strong> ${website.url}</p>
-        <p><strong>Media Count:</strong> ${website.mediaCount}</p>
-        <p><strong>Blog Count:</strong> ${website.blogCount}</p>
-        <p><strong>Page Speed:</strong> ${website.seoMetrics.pageSpeed}/100</p>
-        <p><strong>Keyword Rank:</strong> ${website.seoMetrics.keywordRank}</p>
-        <p><strong>Status:</strong> ${website.status}</p>
-        <p><strong>Added:</strong> ${website.addedAt}</p>
-        <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
-      </div>
-    `;
-    html2pdf().from(element).save(`website_${website.id}.pdf`);
-  }, []);
-
   const handleViewWebsite = useCallback((website: Website) => {
     setSelectedWebsite(website);
   }, []);
@@ -486,10 +464,6 @@ export default function WebsiteManagement() {
                       <DropdownMenuItem onClick={() => handleViewWebsite(website)}>
                         <FileText className="mr-2 h-4 w-4" />
                         View Details
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => generateWebsiteReportPDF(website)}>
-                        <FileText className="mr-2 h-4 w-4" />
-                        Generate PDF
                       </DropdownMenuItem>
                       <DropdownMenuItem onClick={() => alert(`Editing ${website.url}`)}>
                         <Edit className="mr-2 h-4 w-4" />
