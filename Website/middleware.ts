@@ -11,11 +11,15 @@ const publicRoutes = createRouteMatcher([
   "/blog",
   "/project",
 ]);
+
 const invalidRoutes = createRouteMatcher(["/dashboard"]);
-const adminRoutes = createRouteMatcher(["/admin(.*)", "/api/users", "/api/users/update"]);
+const adminRoutes = createRouteMatcher([
+  "/admin(.*)",
+  "/api/users",
+  "/api/users/update"]);
+
 export default clerkMiddleware(async (auth, req) => {
   console.log(`[Middleware] Processing request for URL: ${req.url}`);
-
   const { userId } = await auth();
   console.log(`[Middleware] User ID: ${userId || "Unauthenticated"}`);
 
