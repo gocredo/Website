@@ -23,76 +23,76 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!isLoaded || !user) return;
+  // useEffect(() => {
+  //   if (!isLoaded || !user) return;
 
-    // Redirect to onboarding if no businessId
-    if (!user.publicMetadata.businessId) {
-      router.push("/onboarding");
-      return;
-    }
+  //   // Redirect to onboarding if no businessId
+  //   if (!user.publicMetadata.businessId) {
+  //     router.push("/onboarding");
+  //     return;
+  //   }
 
-    async function fetchBusinessData() {
-      try {
-        const token = await getToken({ template: "goCredo1" });
-        if (!token) {
-          throw new Error("Failed to get authentication token");
-        }
+  //   async function fetchBusinessData() {
+  //     try {
+  //       const token = await getToken({ template: "goCredo1" });
+  //       if (!token) {
+  //         throw new Error("Failed to get authentication token");
+  //       }
 
-        const response = await fetch("/api/business", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+  //       const response = await fetch("/api/business", {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       });
 
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error || `HTTP error ${response.status}`);
-        }
+  //       if (!response.ok) {
+  //         const data = await response.json();
+  //         throw new Error(data.error || `HTTP error ${response.status}`);
+  //       }
 
-        const data = await response.json();
-        if (!data.business) {
-          throw new Error("No business found");
-        }
+  //       const data = await response.json();
+  //       if (!data.business) {
+  //         throw new Error("No business found");
+  //       }
 
-        setBusiness(data.business);
-      } catch (err) {
-        console.error("Error fetching business data:", err);
-        const errorMessage =
-          typeof err === "object" && err !== null && "message" in err
-            ? String((err as { message?: unknown }).message)
-            : "Failed to load business data";
-        setError(errorMessage);
-        toast({
-          title: "Error",
-          description: errorMessage,
-          variant: "destructive",
-        });
-      } finally {
-        setLoading(false);
-      }
-    }
+  //       setBusiness(data.business);
+  //     } catch (err) {
+  //       console.error("Error fetching business data:", err);
+  //       const errorMessage =
+  //         typeof err === "object" && err !== null && "message" in err
+  //           ? String((err as { message?: unknown }).message)
+  //           : "Failed to load business data";
+  //       setError(errorMessage);
+  //       toast({
+  //         title: "Error",
+  //         description: errorMessage,
+  //         variant: "destructive",
+  //       });
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
 
-    fetchBusinessData();
-  }, [isLoaded, user, getToken, router]);
+  //   fetchBusinessData();
+  // }, [isLoaded, user, getToken, router]);
 
-  if (!isLoaded || loading) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-white" />
-      </div>
-    );
-  }
+  // if (!isLoaded || loading) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+  //       <Loader2 className="h-8 w-8 animate-spin text-white" />
+  //     </div>
+  //   );
+  // }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <p className="text-red-500">Error: {error}</p>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+  //       <p className="text-red-500">Error: {error}</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-12 px-4">
@@ -125,7 +125,7 @@ export default function DashboardPage() {
                 You haven't set up your business profile yet.
               </p>
               <a
-                href="/onboarding"
+                href="/dashboard"
                 className="mt-4 inline-block bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-4 rounded-md"
               >
                 Set up your business
