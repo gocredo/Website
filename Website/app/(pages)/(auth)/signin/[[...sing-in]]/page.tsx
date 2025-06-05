@@ -1,11 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
 import { SignIn } from "@clerk/nextjs";
 import { motion } from "framer-motion";
 import { useToast } from "lib/toast/useToast";
 
-export default function SignInPage() {
-  useToast();
+function SignInContent() {
+  useToast(); // Calls useSearchParams internally
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <motion.div
@@ -16,14 +17,18 @@ export default function SignInPage() {
       >
         <div className="text-center">
           <h1 className="text-3xl font-bold text-white mb-6">
-            Welcome to <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Creado</span>
+            Welcome to{" "}
+            <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              Creado
+            </span>
           </h1>
           <p className="text-gray-400 mb-8">Sign in to your account to continue</p>
         </div>
         <SignIn
           appearance={{
             elements: {
-              formButtonPrimary: "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white",
+              formButtonPrimary:
+                "bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white",
               card: "bg-transparent",
               headerTitle: "text-white",
               headerSubtitle: "text-gray-400",
@@ -35,5 +40,19 @@ export default function SignInPage() {
         />
       </motion.div>
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">
+          Loading...
+        </div>
+      }
+    >
+      <SignInContent />
+    </Suspense>
   );
 }
