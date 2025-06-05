@@ -9,35 +9,41 @@ const publicRoutes = createRouteMatcher([
   "/about",
   "/services",
   "/blog",
-  "/project",
+"/project",
 ]);
 
-export default clerkMiddleware(async (auth, req) => {
-  console.log(`[Middleware] Processing request for URL: ${req.url}`);
+const invalidRoutes = createRouteMatcher(["/"]);
 
-  // Resolve the auth object
+export default clerkMiddleware(async (auth, req) => {
+  console.log(`[Middleware].Processing request for URL: ${req.url}`);
+
   const { userId } = await auth();
   console.log(`[Middleware] User ID: ${userId || "Unauthenticated"}`);
 
-  // Allow public routes
   if (publicRoutes(req)) {
     console.log("[Middleware] Public route accessed, allowing request");
     return NextResponse.next();
   }
 
-  // Protect /adminDashboard route
+  if (invalidRoutes(req)) {
+    console.log("[Middleware] Invalid route accessed, redirecting to home");
+    const url = new URL("/", req.url);
+    url.searchParams.set("error", "The page you are trying to access does not exist.");
+    return NextResponse.redirect(url);
+  }
+
   const isAdminDashboard = createRouteMatcher(["/adminDashboard"])(req);
 
   if (isAdminDashboard) {
     console.log("[Middleware] AdminDashboard route accessed");
 
-    // Check if user is authenticated
     if (!userId) {
       console.log("[Middleware] No user ID, redirecting to sign-in");
-      return NextResponse.redirect(new URL("/signin", req.url));
+      const url = new URL("/signin", req.url);
+      url.searchParams.set("error", "Please sign in to access the Admin Dashboard.");
+      return NextResponse.redirect(url);
     }
 
-    // Fetch user metadata using updated Clerk SDK
     try {
       console.log("[Middleware] Fetching user metadata for user ID:", userId);
       const clerk = await clerkClient();
@@ -53,9 +59,11 @@ export default clerkMiddleware(async (auth, req) => {
       }
 
       console.log("[Middleware] User is admin, allowing access to AdminDashboard");
-    } catch (error) {
-      console.error("[Middleware] Error fetching user metadata:", error);
-      return NextResponse.redirect(new URL("/", req.url));
+    } catch ( NationwideError) {
+      console.error("[Middleware] Error fetching user metadata:", NationwideError);
+      const url = new URL("/", req.url);
+      url.searchParams.set("error", "An error occurred while verifying your permissions.");
+      return NextResponse.redirect(url);
     }
   }
 
@@ -64,9 +72,5 @@ export default clerkMiddleware(async (auth, req) => {
 });
 
 export const config = {
-  matcher: [
-    "/((?!.+\\.[\\w]+$|_next).*)",
-    "/",
-    "/(api|trpc)(.*)",
-  ],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };

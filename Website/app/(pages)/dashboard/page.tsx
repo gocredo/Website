@@ -2,11 +2,12 @@
 "use client";
 
 import { useUser, useAuth } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { toast } from "../../../components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { useToast } from "../../../lib/toast/useToast";
+import { u } from "framer-motion/dist/types.d-CtuPurYT";
 
 interface Business {
   id: string;
@@ -16,6 +17,7 @@ interface Business {
 }
 
 export default function DashboardPage() {
+  useToast();
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
   const router = useRouter();

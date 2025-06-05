@@ -9,6 +9,7 @@ import { Cta } from "../../components/home/cta"
 import { ContactForm } from "../../components/home/contact-form"
 import { Header } from "../../components/layout/header"
 import { Footer } from "../../components/layout/footer"
+import { useToast } from "../../lib/toast/useToast"
 // import { generateMetadata } from "@/utils/seo"
 
 // export const metadata = generateMetadata({
@@ -17,6 +18,7 @@ import { Footer } from "../../components/layout/footer"
 // })
 
 export default function Home() {
+  useToast();
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-950 text-white">
       <Header />
