@@ -1,13 +1,11 @@
-// app/(pages)/dashboard/page.tsx
 "use client";
 
 import { useUser, useAuth } from "@clerk/nextjs";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { useToast } from "../../../lib/toast/useToast";
-import { u } from "framer-motion/dist/types.d-CtuPurYT";
 
 interface Business {
   id: string;
@@ -16,8 +14,9 @@ interface Business {
   description?: string;
 }
 
-export default function DashboardPage() {
-  useToast();
+// Separate component for the dashboard content
+function DashboardContent() {
+  const { toast } = useToast(); // Call useToast here, inside Suspense
   const { user, isLoaded } = useUser();
   const { getToken } = useAuth();
   const router = useRouter();
@@ -78,7 +77,7 @@ export default function DashboardPage() {
   //   }
 
   //   fetchBusinessData();
-  // }, [isLoaded, user, getToken, router]);
+  // }, [isLoaded, user, getToken, router, toast]);
 
   // if (!isLoaded || loading) {
   //   return (
@@ -127,7 +126,7 @@ export default function DashboardPage() {
                 You haven't set up your business profile yet.
               </p>
               <a
-                href="/dashboard"
+                href="/onboarding"
                 className="mt-4 inline-block bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-2 px-4 rounded-md"
               >
                 Set up your business
@@ -154,3 +153,21 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+// Main page component with Suspense
+export default function DashboardPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-white" />
+        </div>
+      }
+    >
+      <DashboardContent />
+    </Suspense>
+  );
+}
+
+// Optional: Disable static generation for this page
+export const dynamic = "force-dynamic";
