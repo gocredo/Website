@@ -5,10 +5,10 @@ import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 
 const achievementStats = [
-  { value: 50, label: "Projects Launched", suffix: "+" },
-  { value: 95, label: "Client Retention", suffix: "%" },
-  { value: 30, label: "Industries Served", suffix: "+" },
-  { value: 10, label: "Years of Experience", suffix: "+" },
+  { value: 10, label: "Projects Launched", suffix: "+" },
+  { value: 85, label: "Client Retention", suffix: "%" },
+  { value: 5, label: "Industries Served", suffix: "+" },
+  { value: 5, label: "Years of Experience", suffix: "+" },
 ];
 
 export default function Achievements() {
