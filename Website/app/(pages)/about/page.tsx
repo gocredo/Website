@@ -60,7 +60,8 @@ export default function About() {
             A creative design studio with a passion for crafting beautiful digital experiences that drive results.
           </p> */}
           <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-16">
-            {aboutData?.description || 'No description available'}
+            {aboutData?.description || 'At goCredo, we blend the power of SaaS with cutting-edge digital marketing to help businesses accelerate growth, elevate their brand, and dominate their online presence.'}
+
           </p>
         </motion.div>
 

@@ -101,14 +101,14 @@ export function ContactForm() {
                   <Mail className="h-6 w-6 text-purple-400 mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-medium mb-1">Email Us</h4>
-                    <p className="text-gray-400">info@gocredo.com</p>
+                    <p className="text-gray-400">support@gocredo.in</p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
                   <Phone className="h-6 w-6 text-purple-400 mt-1 flex-shrink-0" />
                   <div>
                     <h4 className="font-medium mb-1">Call Us</h4>
-                    <p className="text-gray-400">+1 (555) 123-4567</p>
+                    <p className="text-gray-400">+91 9211691306 </p>
                   </div>
                 </div>
                 <div className="flex items-start space-x-4">
@@ -116,9 +116,9 @@ export function ContactForm() {
                   <div>
                     <h4 className="font-medium mb-1">Visit Us</h4>
                     <p className="text-gray-400">
-                      123 Marketing Street
+                      Malaviya Nagar
                       <br />
-                      Digital City, DC 10101
+                      Jaipur, 302011
                     </p>
                   </div>
                 </div>
@@ -243,11 +243,11 @@ export function ContactForm() {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="seo">Search Engine Optimization</SelectItem>
-                        <SelectItem value="ppc">Pay-Per-Click Advertising</SelectItem>
+                        <SelectItem value="ppc">Pay-Per-Click Advertising(ads)</SelectItem>
                         <SelectItem value="social">Social Media Marketing</SelectItem>
                         <SelectItem value="web">Web Design & Development</SelectItem>
                         <SelectItem value="content">Content Marketing</SelectItem>
-                        <SelectItem value="email">Email Marketing</SelectItem>
+                        <SelectItem value="email">Branding & Design </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

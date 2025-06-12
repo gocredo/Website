@@ -5,10 +5,10 @@ import { useInView } from "react-intersection-observer"
 import { useEffect, useState } from "react"
 
 const stats = [
-  { value: 500, label: "Clients Worldwide", suffix: "+" },
+  { value: 10, label: "Clients Worldwide", suffix: "+" },
   { value: 94, label: "Client Retention Rate", suffix: "%" },
-  { value: 10, label: "Years of Experience", suffix: "+" },
-  { value: 250, label: "Marketing Campaigns", suffix: "M+" },
+  { value: 5, label: "Years of Experience", suffix: "+" },
+  { value: 20, label: "Marketing Campaigns", suffix: "M+" },
 ]
 
 export function Stats() {
@@ -27,7 +27,7 @@ export function Stats() {
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Driving Growth Through Digital Excellence</h2>
           <p className="text-gray-400 text-lg">
-            We've helped hundreds of businesses achieve their marketing goals and grow their online presence.
+            We've helped 10+ businesses to achieve their marketing goals and grow their online presence.
           </p>
         </motion.div>
 

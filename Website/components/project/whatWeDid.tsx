@@ -8,19 +8,19 @@ const projects = [
     title: "E-Commerce Platform",
     description:
       "Developed a scalable e-commerce solution with advanced analytics, increasing client sales by 40%.",
-    image: "/images/ecommerce.jpg", // Placeholder; add actual image in public/
+    image: "/images/placeholder.jpg", // Placeholder; add actual image in public/
   },
   {
     title: "Mobile App Redesign",
     description:
       "Revamped a mobile app UI/UX, improving user retention by 25% and enhancing brand visibility.",
-    image: "/images/mobile-app.jpg",
+    image: "/images/placeholder.jpg",
   },
   {
     title: "SEO Campaign",
     description:
       "Executed a data-driven SEO strategy, boosting organic traffic by 60% in six months.",
-    image: "/images/seo.jpg",
+    image: "/images/placeholder.jpg",
   },
 ];
 

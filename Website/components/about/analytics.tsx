@@ -5,10 +5,10 @@ import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 
 const analyticsStats = [
-  { value: 300, label: "Projects Completed", suffix: "+" },
-  { value: 98, label: "Client Satisfaction", suffix: "%" },
-  { value: 50, label: "Team Members", suffix: "+" },
-  { value: 15, label: "Awards Won", suffix: "+" },
+  { value: 10, label: "Projects Completed", suffix: "+" },
+  { value: 90, label: "Client Satisfaction", suffix: "%" },
+  { value: 10, label: "Team Members", suffix: "+" },
+  { value: 2, label: "Awards Won", suffix: "+" },
 ];
 
 export default function Analytics() {

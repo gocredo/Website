@@ -14,18 +14,18 @@ const visionPoints = [
     icon: <Target className="h-10 w-10 text-purple-400" />,
     title: 'Our Mission',
     description: (mission?: string) =>
-      mission || 'No mission statement available',
+      mission || "Empowering brands with data-driven strategies and stunning design — our mission fuels your digital growth journey.",
   },
   {
     icon: <Globe className="h-10 w-10 text-purple-400" />,
     title: 'Our Vision',
     description: (vision?: string) =>
-      vision || 'No vision statement available',
+      vision ||  "To be the leading force behind digital transformation for modern businesses, scaling success with smart SaaS and marketing innovation.",
   },
   {
     icon: <Sparkles className="h-10 w-10 text-purple-400" />,
     title: 'Our Values',
-    description: 'Creativity, integrity, and collaboration are at the heart of everything we do.',
+    description: 'Trust, Creativity, integrity, and collaboration are at the heart of everything we do.',
   },
 ];
 

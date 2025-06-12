@@ -35,7 +35,7 @@ export function Cta() {
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                <Link href="/case-studies">View Case Studies</Link>
+                <Link href="/project">View Case Studies</Link>
               </Button>
             </div>
           </div>

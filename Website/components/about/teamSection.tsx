@@ -6,38 +6,38 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 const teamMembers = [
   {
     name: "Alok kuamr",
-    role: "Creative Director & Frontend Developer",
-    image: "/placeholder.svg",
+    role: "Branding Manager & Frontend Developer",
+    image: "images/placeholder.jpg",
     bio: "Alok leads our creative vision with over 4+ years of experience in design,Lead and branding.",
   },
   {
     name: "Akshansh Jain",
     role: "Backend Developer",
-    image: "/placeholder.svg",
+    image: "images/placeholder.jpg",
     bio: "Akshansh builds robust solutions, specializing in modern web technologies and performance.",
   },
   {
     name: "Lokesh Kumar",
     role: "Marketing Manager",
-    image: "/placeholder.svg",
+    image: "images/placeholder.jpg",
     bio: "Lokesh drives our marketing strategies, boosting client visibility and engagement.",
   },
   {
     name: "Sachin kumar",
     role: "Creative Director",
-    image: "/placeholder.svg",
+    image: "images/placeholder.jpg",
     bio: "Jane leads our creative vision with over 15 years of experience in design and branding.",
   },
   {
     name: "Gaurav Singh",
     role: "Lead Developer",
-    image: "/placeholder.svg",
+    image: "images/placeholder.jpg",
     bio: "gaurav handling the devops with 5+ year of experience, specializing in modern web3 and Devops.",
   },
   {
     name: "Vishal Singh",
     role: " Social media Manager",
-    image: "/placeholder.svg",
+    image: "images/placeholder.jpg",
     bio: "Vishal drives our agency in various field including social media and management.",
   },
 ];

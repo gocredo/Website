@@ -7,26 +7,34 @@ import { ChevronLeft, ChevronRight, Quote } from "lucide-react"
 const testimonials = [
   {
     quote:
-      "goCredo transformed our digital presence completely. Their SEO strategies increased our organic traffic by 200% in just 6 months.",
-    author: "Sarah Johnson",
+      "goCredo completely changed how Roshani Public School looks online. The website is awesome now, and we’re getting a lot more calls for admissions. Parents say they trust us more just seeing the site!",
+    author: "Prince Kumar",
+    position: "Director",
+    company: "Roshani Public School",
+  },
+  {
+    quote:
+      "Working with goCredo was a big win for us. Their SEO doubled our website traffic in just six months. No way we could’ve done that on our own!",
+    author: "Ankit Dudey",
     position: "Marketing Director",
     company: "TechSolutions Inc.",
   },
   {
     quote:
-      "The PPC campaigns managed by goCredo delivered a 320% ROI. Their data-driven approach and continuous optimization made all the difference.",
-    author: "Michael Chen",
-    position: "CEO",
-    company: "Innovate Labs",
+      "Thank you so much. The website they made for Herboglobal Health is really solid, and their marketing has people noticing us. Clients are reaching out more, and we’re standing out in the market now.",
+    author: "Management Team",
+    position: "Corporate Office",
+    company: "Herboglobal Health Pvt Ltd",
   },
   {
     quote:
-      "Working with goCredo has been a game-changer for our business. Their social media strategies helped us build a loyal community around our brand.",
+      "goCredo totally upped our social media game. Our posts get way more likes and comments now, and people are actually talking about our brand. Feels like we finally have a voice out there!",
     author: "Emily Rodriguez",
     position: "Brand Manager",
     company: "Lifestyle Brands Co.",
   },
-]
+];
+
 
 export function TestimonialCarousel() {
   const [current, setCurrent] = useState(0)

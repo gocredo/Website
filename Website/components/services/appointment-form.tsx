@@ -3,15 +3,18 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "../../components/ui/button";
-import { Input } from "../../components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../components/ui/select";
-import { Calendar, Clock, CheckCircle, Send } from "lucide-react";
+import { CheckCircle, Send } from "lucide-react";
+import FormField from "../../components/ui/form-field";
+import CustomDatePicker from "../../components/ui/custom-date-picker";
+import TimeSelect from "../../components/ui/time-select";
 
 interface AppointmentFormData {
   name: string;
   email: string;
   phone: string;
-  dateTime: string;
+  date: Date | null;
+  time: string;
   reason: string;
 }
 
@@ -20,24 +23,26 @@ export default function AppointmentForm() {
     name: "",
     email: "",
     phone: "",
-    dateTime: "",
+    date: null,
+    time: "",
     reason: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Mock available slots (replace with real API data if needed)
-  const availableSlots = [
-    { date: "2025-06-05", time: "10:00 AM", id: "2025-06-05_10:00" },
-    { date: "2025-06-05", time: "11:00 AM", id: "2025-06-05_11:00" },
-    { date: "2025-06-06", time: "2:00 PM", id: "2025-06-06_14:00" },
-    { date: "2025-06-06", time: "3:00 PM", id: "2025-06-06_15:00" },
+  // Mock available time slots (replace with API if needed)
+  const availableTimes = [
+    "10:00 AM",
+    "11:00 AM",
+    "12:00 PM",
+    "1:00 PM",
+    "2:00 PM",
+    "3:00 PM",
+    "4:00 PM",
   ];
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -46,8 +51,12 @@ export default function AppointmentForm() {
     setFormData((prev) => ({ ...prev, reason: value }));
   };
 
-  const handleSlotSelect = (slotId: string) => {
-    setFormData((prev) => ({ ...prev, dateTime: slotId }));
+  const handleDateChange = (date: Date | null) => {
+    setFormData((prev) => ({ ...prev, date, time: "" }));
+  };
+
+  const handleTimeChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, time: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -61,7 +70,10 @@ export default function AppointmentForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          dateTime: formData.date && formData.time ? `${formData.date.toISOString().split("T")[0]}_${formData.time}` : "",
+        }),
       });
 
       if (!response.ok) {
@@ -71,7 +83,7 @@ export default function AppointmentForm() {
 
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", dateTime: "", reason: "" });
+      setFormData({ name: "", email: "", phone: "", date: null, time: "", reason: "" });
     } catch (err) {
       setIsSubmitting(false);
       setError(err instanceof Error ? err.message : "An unexpected error occurred");
@@ -137,40 +149,48 @@ export default function AppointmentForm() {
                 {error}
               </div>
             )}
+            <FormField
+              label="Your Name"
+              name="name"
+              type="text"
+              placeholder="Your Name"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+            />
+            <FormField
+              label="Your Email"
+              name="email"
+              type="email"
+              placeholder="Your Email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
+            <FormField
+              label="Phone Number"
+              name="phone"
+              type="tel"
+              placeholder="+91 98765 43210"
+              value={formData.phone}
+              onChange={handleInputChange}
+              required
+            />
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-200">Your Name</label>
-              <Input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                value={formData.name}
-                onChange={handleInputChange}
-                className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-                required
+              <label className="text-sm font-medium text-gray-200">Select Date</label>
+              <CustomDatePicker
+                selected={formData.date}
+                onChange={handleDateChange}
+                minDate={new Date()}
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-200">Your Email</label>
-              <Input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                value={formData.email}
-                onChange={handleInputChange}
-                className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-200">Phone Number</label>
-              <Input
-                type="tel"
-                name="phone"
-                placeholder="+1 (555) 123-4567"
-                value={formData.phone}
-                onChange={handleInputChange}
-                className="bg-gray-800 border-gray-700 text-white placeholder-gray-400"
-                required
+              <label className="text-sm font-medium text-gray-200">Select Time</label>
+              <TimeSelect
+                value={formData.time}
+                onChange={handleTimeChange}
+                times={availableTimes}
+                disabled={!formData.date}
               />
             </div>
             <div className="space-y-2">
@@ -187,32 +207,9 @@ export default function AppointmentForm() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-200">Available Time Slots</label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {availableSlots.map((slot) => (
-                  <Button
-                    key={slot.id}
-                    type="button"
-                    variant={formData.dateTime === slot.id ? "default" : "outline"}
-                    className={`flex items-center justify-center space-x-2 ${
-                      formData.dateTime === slot.id
-                        ? "bg-purple-500 hover:bg-purple-600 text-white"
-                        : "bg-gray-800 border-gray-700 text-gray-200 hover:bg-gray-700"
-                    }`}
-                    onClick={() => handleSlotSelect(slot.id)}
-                  >
-                    <Calendar className="h-4 w-4" />
-                    <span>{slot.date}</span>
-                    <Clock className="h-4 w-4" />
-                    <span>{slot.time}</span>
-                  </Button>
-                ))}
-              </div>
-            </div>
             <Button
               type="submit"
-              disabled={isSubmitting || !formData.dateTime}
+              disabled={isSubmitting || !formData.date || !formData.time}
               className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white"
             >
               {isSubmitting ? (
