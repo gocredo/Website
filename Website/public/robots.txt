@@ -1,0 +1,17 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Disallow: /admin/*
+Disallow: /signin/*
+Disallow: /signup/*
+Disallow: /api/*
+Disallow: /dashboard
+
+# Host
+Host: https://gocredo.in
+
+# Sitemaps
+Sitemap: https://gocredo.in/sitemap.xml

@@ -13,15 +13,6 @@ import { Header } from "../../components/layout/header";
 import { Footer } from "../../components/layout/footer";
 import { useToast } from "../../lib/toast/useToast";
 
-// Optional: Uncomment if you want to use dynamic metadata
-// import { generateMetadata } from "@/utils/seo";
-
-// export const metadata = generateMetadata({
-//   title: "goCredo - Digital Marketing Agency",
-//   description: "Boost your business with goCredo's SEO, PPC, and social media services.",
-// });
-
-// Component that uses useToast
 function HomeContent() {
   const { toast } = useToast(); 
 

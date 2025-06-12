@@ -24,7 +24,7 @@ function SignInContent() {
           </h1>
           <p className="text-gray-400 mb-8">Sign in to your account to continue</p>
         </div>
-        <SignIn
+        <SignIn fallbackRedirectUrl="/"
           appearance={{
             elements: {
               formButtonPrimary:

@@ -17,7 +17,7 @@ export function Cta() {
           className="relative overflow-hidden rounded-2xl"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600"></div>
-          <div className="absolute inset-0 bg-[url('/placeholder.svg')] mix-blend-overlay opacity-20"></div>
+          <div className="absolute inset-0 bg-[url('/images/placeholder.jpg')] mix-blend-overlay opacity-20"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent"></div>
 
           <div className="relative py-16 px-8 md:py-24 md:px-12 text-center">

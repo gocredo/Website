@@ -57,12 +57,3 @@ export default function RootLayout({
     </ClerkProvider>
   )
 }
-
-export const metadata = {
-  title: {
-    default: "goCredo - Digital Marketing Agency",
-    template: "%s | goCredo",
-  },
-  description: "Boost your business with goCredo's SEO, PPC, and social media services.",
-    generator: 'v0.dev'
-}
