@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/ca
 
 const teamMembers = [
   {
-    name: "Alok kuamr",
+    name: "Alok kumar",
     role: "Branding Manager & Frontend Developer",
     image: "images/placeholder.jpg",
     bio: "Alok leads our creative vision with over 4+ years of experience in design,Lead and branding.",
@@ -17,16 +17,16 @@ const teamMembers = [
     bio: "Akshansh builds robust solutions, specializing in modern web technologies and performance.",
   },
   {
-    name: "Lokesh Kumar",
+    name: "Lokesh Agarwal",
     role: "Marketing Manager",
     image: "images/placeholder.jpg",
     bio: "Lokesh drives our marketing strategies, boosting client visibility and engagement.",
   },
   {
-    name: "Sachin kumar",
+    name: "Sachin kumar Nagarwal",
     role: "Creative Director",
     image: "images/placeholder.jpg",
-    bio: "Jane leads our creative vision with over 15 years of experience in design and branding.",
+    bio: "Sachin leads our creative vision with over 15 years of experience in design and branding.",
   },
   {
     name: "Gaurav Singh",

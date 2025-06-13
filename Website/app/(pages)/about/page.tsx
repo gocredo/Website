@@ -53,7 +53,7 @@ export default function About() {
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             About{" "}
             <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Creado
+              GoCredo
             </span>
           </h1>
           {/* <p className="text-gray-400 text-lg max-w-3xl mx-auto mb-16">

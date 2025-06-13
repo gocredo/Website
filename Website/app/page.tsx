@@ -4,10 +4,11 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
 };
+
 export const metadata = {
-  title: "GoCredo: Top Website Development & Digital Marketing in Jaipur",
-  description: "Grow your business with GoCredo’s expert web development, SEO, PPC, and digital marketing services in Jaipur, Rajasthan. Start now!",
-  keywords: "website development Jaipur, digital marketing Jaipur, SEO services Rajasthan, PPC advertising, social media marketing, GoCredo, best digital marketing agency Jaipur, affordable SEO services Rajasthan",
+  title: "GoCredo: Jaipur-Based Agency for Website Development & Digital Marketing Across India",
+  description: "Grow your business with GoCredo, a trusted Jaipur-based agency offering expert web development, SEO, social media handling, ads, PPC, and digital marketing services across India. Start now!",
+  keywords: "website development India, digital marketing India, Jaipur-based agency, SEO services India, PPC advertising, social media marketing, GoCredo, best digital marketing agency Jaipur, affordable SEO services Rajasthan",
   charset: "utf-8",
   robots: "index, follow",
   sitemap: "https://gocredo.in/sitemap.xml",
@@ -18,24 +19,24 @@ export const metadata = {
   },
   manifest: "/site.webmanifest",
   openGraph: {
-    title: "GoCredo: Skyrocket Your Business with Digital Marketing in Jaipur",
-    description: "Skyrocket your business with GoCredo’s expert web development, SEO, and digital marketing in Jaipur. Start today!",
+    title: "GoCredo: Jaipur-Based Agency to Skyrocket Your Business Across India",
+    description: "Skyrocket your business with GoCredo, a Jaipur-based agency offering expert web development, SEO, social media handling, ads, and digital marketing services across India. Start today!",
     url: "https://gocredo.in?utm_source=social&utm_medium=og_image&utm_campaign=home",
     type: "website",
     images: [
       {
-        url: "https://gocredo.in/images/skyrocket-digital-marketing.jpg",
+        url: "https://gocredo.in/images/skyrocket-digital-marketing.png",
         width: 1200,
         height: 630,
-        alt: "GoCredo Digital Marketing and Web Development Services in Jaipur, Rajasthan",
+        alt: "GoCredo Jaipur-Based Digital Marketing and Web Development Services for India",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "GoCredo: Skyrocket Your Business with Digital Marketing in Jaipur",
-    description: "Skyrocket your business with GoCredo’s expert web development, SEO, and digital marketing in Jaipur. Start today!",
-    images: ["https://gocredo.in/images/skyrocket-digital-marketing.jpg"],
+    title: "GoCredo: Jaipur-Based Agency to Skyrocket Your Business Across India",
+    description: "Skyrocket your business with GoCredo, a Jaipur-based agency offering expert web development, SEO, social media handling, ads, and digital marketing services across India. Start today!",
+    images: ["https://gocredo.in/images/skyrocket-digital-marketing.png"],
     site: "@gocredo",
   },
   alternates: {
@@ -50,14 +51,14 @@ export default function Home() {
   const schema = [
     {
       "@context": "https://schema.org",
-      "@type": ["LocalBusiness", "WebDesignAgency"],
+      "@type": ["LocalBusiness", "WebDesignAgency","Marketing"],
       name: "GoCredo",
       url: "https://gocredo.in",
       telephone: "+91-9211691306",
-      description: "GoCredo provides expert website development, SEO, PPC, and digital marketing services in Jaipur, Rajasthan to help businesses grow.",
+      description: "GoCredo, a Jaipur-based agency, provides expert website development, SEO, social media handling, ads, PPC, and digital marketing services to help businesses grow across India.",
       address: {
         "@type": "PostalAddress",
-        streetAddress: "123, Example Street, Vaishali Nagar", // Replace with actual address
+        streetAddress: "Malaviya Nagar,", 
         addressLocality: "Jaipur",
         addressRegion: "Rajasthan",
         postalCode: "302017",
@@ -68,7 +69,7 @@ export default function Home() {
         latitude: "26.8617",
         longitude: "75.8101",
       },
-      image: "https://gocredo.in/assets/logo.png",
+      image: "https://gocredo.in/images/placeholder.jpg",
       priceRange: "$$",
       openingHours: "Mo-Fr 09:00-18:00",
       sameAs: [
@@ -76,6 +77,16 @@ export default function Home() {
         "https://medium.com/@gocredo",
         "https://www.linkedin.com/company/gocredo",
         "https://twitter.com/gocredo",
+      ],
+      areaServed: [
+        {
+          "@type": "Country",
+          name: "India",
+        },
+        {
+          "@type": "City",
+          name: "Jaipur",
+        },
       ],
     },
     {
@@ -87,11 +98,17 @@ export default function Home() {
         name: "GoCredo",
         url: "https://gocredo.in",
       },
-      areaServed: {
-        "@type": "Place",
-        name: "Jaipur, Rajasthan",
-      },
-      description: "Expert website development, SEO, PPC, and social media marketing services to grow your business in Jaipur.",
+      areaServed: [
+        {
+          "@type": "Country",
+          name: "India",
+        },
+        {
+          "@type": "City",
+          name: "Jaipur, Rajasthan",
+        },
+      ],
+      description: "GoCredo, a Jaipur-based agency, offers expert website development, SEO, PPC, and social media marketing services to grow your business across India.",
     },
     {
       "@context": "https://schema.org",

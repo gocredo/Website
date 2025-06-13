@@ -1,11 +1,9 @@
-// components/home/services.tsx
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Search, BarChart, Share2, Globe, TrendingUp, Mail, MapPin, ShoppingCart, ArrowUpRight, Video, Palette, Code, FileText } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { Check, X } from "lucide-react";
 
 const container = {
   hidden: { opacity: 0 },
@@ -18,19 +16,19 @@ const item = {
 };
 
 const iconMap = {
-  "Search Engine Optimization": <Search className="h-10 w-10 text-purple-400" />,
-  "Pay-Per-Click Advertising": <BarChart className="h-10 w-10 text-purple-400" />,
-  "Social Media Marketing": <Share2 className="h-10 w-10 text-purple-400" />,
-  "Web Design & Development": <Globe className="h-10 w-10 text-purple-400" />,
-  "Content Marketing": <TrendingUp className="h-10 w-10 text-purple-400" />,
-  "Email Marketing": <Mail className="h-10 w-10 text-purple-400" />,
-  "Analytics & Reporting": <BarChart className="h-10 w-10 text-purple-400" />,
-  "Local SEO": <MapPin className="h-10 w-10 text-purple-400" />,
-  "E-commerce Marketing": <ShoppingCart className="h-10 w-10 text-purple-400" />,
-  "Conversion Rate Optimization": <ArrowUpRight className="h-10 w-10 text-purple-400" />,
-  "Video Marketing": <Video className="h-10 w-10 text-purple-400" />,
-  "Logo Design & Branding": <Palette className="h-10 w-10 text-purple-400" />,
-  "Website Development Tools": <Code className="h-10 w-10 text-purple-400" />,
+  "Search Engine Optimization": <Search className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Pay-Per-Click Advertising": <BarChart className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Social Media Marketing": <Share2 className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Web Design & Development": <Globe className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Content Marketing": <TrendingUp className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Email Marketing": <Mail className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Analytics & Reporting": <BarChart className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Local SEO": <MapPin className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "E-commerce Marketing": <ShoppingCart className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Conversion Rate Optimization": <ArrowUpRight className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Video Marketing": <Video className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Logo Design & Branding": <Palette className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
+  "Website Development Tools": <Code className="h-8 w-8 text-purple-400 sm:h-10 sm:w-10" />,
 };
 
 interface ServiceData {
@@ -229,54 +227,66 @@ export function ServicesTab({ data = {} as ServiceData }) {
   const [activeTab, setActiveTab] = useState("packages");
 
   return (
-    <section id="services" className="py-20 bg-gray-900/30">
-      <div className="container mx-auto px-4">
+    <section id="services" className="py-10 sm:py-20 bg-gray-900/30">
+      <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-center max-w-3xl mx-auto mb-16"
+          className="text-center max-w-3xl mx-auto mb-8 sm:mb-16"
         >
-          <div className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-400 mb-4">
+          <div className="inline-block rounded-full bg-purple-500/10 px-3 py-1 text-xs sm:text-sm font-medium text-purple-400 mb-4">
             Our Services
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Comprehensive Digital Solutions</h2>
-          <p className="text-gray-400 text-lg">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Comprehensive Digital Solutions</h2>
+          <p className="text-gray-400 text-base sm:text-lg">
             Explore our tailored packages for branding, marketing, and web development to drive your business growth.
           </p>
         </motion.div>
 
         <Tabs defaultValue="packages" className="w-full" onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3 md:grid-cols-4 gap-4 mb-12">
-            <TabsTrigger value="packages">Service Packages</TabsTrigger>
-            <TabsTrigger value="marketing">Marketing Plans</TabsTrigger>
-            <TabsTrigger value="branding">Branding Packages</TabsTrigger>
-            <TabsTrigger value="development">Development Tools</TabsTrigger>
+         <TabsList className="flex flex-wrap justify-center gap-2 sm:gap-4 rounded-md bg-gray-800 border border-gray-700 mb-20 sm:mb-12">
+            <TabsTrigger value="packages" className="flex-1 min-w-[100px] text-xs sm:text-sm py-2">
+              Service Packages
+            </TabsTrigger>
+            <TabsTrigger value="marketing" className="flex-1 min-w-[100px] text-xs sm:text-sm py-2">
+              Marketing Plans
+            </TabsTrigger>
+            <TabsTrigger value="branding" className="flex-1 min-w-[100px] text-xs sm:text-sm py-2">
+              Branding Packages
+            </TabsTrigger>
+            <TabsTrigger value="development" className="flex-1 min-w-[100px] text-xs sm:text-sm py-2">
+              Development Tools
+            </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="packages">
+          <TabsContent value="packages" className="mt-10">
             <motion.div
               variants={container}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8"
             >
               {packages.map((pkg, index) => (
                 <motion.div key={index} variants={item}>
                   <Card className="bg-gray-800/50 border-gray-700 hover:border-purple-500/50 transition-all duration-300 h-full">
                     <CardHeader>
-                      <CardTitle className="text-xl font-bold">{pkg.name}</CardTitle>
+                      <CardTitle className="text-lg sm:text-xl font-bold">{pkg.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ul className="space-y-2">
+                      <ul className="space-y-2 text-sm sm:text-base">
                         {pkg.services.map((service, i) => (
                           <li key={i} className="flex items-center space-x-2">
                             {service.included ? (
-                              <Check className="h-5 w-5 text-green-500" />
+                              <span className="inline-block rounded-full bg-green-500/20 text-green-400 text-xs sm:text-sm font-medium px-2 py-1">
+                                ✅
+                              </span>
                             ) : (
-                              <X className="h-5 w-5 text-red-500" />
+                              <span className="inline-block rounded-full bg-red-500/20 text-red-400 text-xs sm:text-sm font-medium px-2 py-1">
+                                ❌
+                              </span>
                             )}
                             <span className="text-gray-400">{service.name}</span>
                           </li>
@@ -295,24 +305,28 @@ export function ServicesTab({ data = {} as ServiceData }) {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8"
             >
               {marketingPlans.map((plan, index) => (
                 <motion.div key={index} variants={item}>
                   <Card className="bg-gray-800/50 border-gray-700 hover:border-purple-500/50 transition-all duration-300 h-full">
                     <CardHeader>
-                      <CardTitle className="text-xl font-bold">{plan.name}</CardTitle>
+                      <CardTitle className="text-lg sm:text-xl font-bold">{plan.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ul className="space-y-2">
+                      <ul className="space-y-2 text-sm sm:text-base">
                         {plan.services.map((service, i) => (
                           <li key={i} className="flex items-center space-x-2">
                             {service.included ? (
-                              <Check className="h-5 w-5 text-green-500" />
+                              <span className="inline-block rounded-full bg-green-500/20 text-green-400 text-xs sm:text-sm font-medium px-2 py-1">
+                                ✅
+                              </span>
                             ) : service.value ? (
-                              <FileText className="h-5 w-5 text-purple-400" />
+                              <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
                             ) : (
-                              <X className="h-5 w-5 text-red-500" />
+                              <span className="inline-block rounded-full bg-green-500/20 text-green-400 text-xs sm:text-sm font-medium px-2 py-1">
+                                ❌
+                              </span>
                             )}
                             <span className="text-gray-400">
                               {service.name} {service.value && <span>({service.value})</span>}
@@ -333,22 +347,26 @@ export function ServicesTab({ data = {} as ServiceData }) {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8"
             >
               {brandingPackages.map((pkg, index) => (
                 <motion.div key={index} variants={item}>
                   <Card className="bg-gray-800/50 border-gray-700 hover:border-purple-500/50 transition-all duration-300 h-full">
                     <CardHeader>
-                      <CardTitle className="text-xl font-bold">{pkg.name}</CardTitle>
+                      <CardTitle className="text-lg sm:text-xl font-bold">{pkg.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ul className="space-y-2">
+                      <ul className="space-y-2 text-sm sm:text-base">
                         {pkg.services.map((service, i) => (
                           <li key={i} className="flex items-center space-x-2">
                             {service.included ? (
-                              <Check className="h-5 w-5 text-green-500" />
+                              <span className="inline-block rounded-full bg-green-500/20 text-green-400 text-xs sm:text-sm font-medium px-2 py-1">
+                                ✅
+                              </span>
                             ) : (
-                              <X className="h-5 w-5 text-red-500" />
+                              <span className="inline-block rounded-full bg-red-500/20 text-red-400 text-xs sm:text-sm font-medium px-2 py-1">
+                                ❌
+                              </span>
                             )}
                             <span className="text-gray-400">{service.name}</span>
                           </li>
@@ -367,22 +385,26 @@ export function ServicesTab({ data = {} as ServiceData }) {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8"
             >
               {developmentTools.map((pkg, index) => (
                 <motion.div key={index} variants={item}>
                   <Card className="bg-gray-800/50 border-gray-700 hover:border-purple-500/50 transition-all duration-300 h-full">
                     <CardHeader>
-                      <CardTitle className="text-xl font-bold">{pkg.name}</CardTitle>
+                      <CardTitle className="text-lg sm:text-xl font-bold">{pkg.name}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <ul className="space-y-2">
+                      <ul className="space-y-2 text-sm sm:text-base">
                         {pkg.tools.map((tool, i) => (
                           <li key={i} className="flex items-center space-x-2">
                             {tool.included ? (
-                              <Check className="h-5 w-5 text-green-500" />
+                              <span className="inline-block rounded-full bg-green-500/20 text-green-400 text-xs sm:text-sm font-medium px-2 py-1">
+                                ✅
+                              </span>
                             ) : (
-                              <X className="h-5 w-5 text-red-500" />
+                              <span className="inline-block rounded-full bg-red-500/20 text-red-400 text-xs sm:text-sm font-medium px-2 py-1">
+                                ❌
+                              </span>
                             )}
                             <span className="text-gray-400">{tool.name}</span>
                           </li>
