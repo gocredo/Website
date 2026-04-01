@@ -1,110 +1,80 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "../../components/ui/card";
-
-const teamMembers = [
-  {
-    name: "Alok kumar",
-    role: "Branding Manager & Frontend Developer",
-    image: "images/placeholder.jpg",
-    bio: "Alok leads our creative vision with over 4+ years of experience in design,Lead and branding.",
-  },
-  {
-    name: "Akshansh Jain",
-    role: "Backend Developer",
-    image: "images/placeholder.jpg",
-    bio: "Akshansh builds robust solutions, specializing in modern web technologies and performance.",
-  },
-  {
-    name: "Lokesh Agarwal",
-    role: "Marketing Manager",
-    image: "images/placeholder.jpg",
-    bio: "Lokesh drives our marketing strategies, boosting client visibility and engagement.",
-  },
-  {
-    name: "Sachin kumar Nagarwal",
-    role: "Creative Director",
-    image: "images/placeholder.jpg",
-    bio: "Sachin leads our creative vision with over 15 years of experience in design and branding.",
-  },
-  {
-    name: "Gaurav Singh",
-    role: "Lead Developer",
-    image: "images/placeholder.jpg",
-    bio: "gaurav handling the devops with 5+ year of experience, specializing in modern web3 and Devops.",
-  },
-  {
-    name: "Vishal Singh",
-    role: " Social media Manager",
-    image: "images/placeholder.jpg",
-    bio: "Vishal drives our agency in various field including social media and management.",
-  },
-];
-
-const container = {
-  hidden: { opacity: 0 },
-  show: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-    },
-  },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { teamMembers } from "../../lib/teamData";
 
 export default function TeamSection() {
   return (
     <section className="py-20 bg-gray-900/30">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center max-w-3xl mx-auto mb-16"
-        >
-          <div className="inline-block rounded-full bg-purple-500/10 px-4 py-1.5 text-sm font-medium text-purple-400 mb-4">
-            Our Team
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Meet Our Experts</h2>
-          <p className="text-gray-400 text-lg">
-            Our talented team brings together creativity, technical expertise, and strategic thinking.
+        <div className="text-center mb-16">
+          <h2 className="text-4xl font-bold tracking-tight">Meet Our Experts</h2>
+          <p className="text-gray-400 mt-4 text-lg">
+            Passionate creators who bring your vision to life
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div
-          variants={container}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-8"
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {teamMembers.map((member, index) => (
-            <motion.div key={index} variants={item}>
-              <Card className="bg-gray-800/50 border-gray-700 hover:border-purple-500/50 transition-all duration-300 h-full">
-                <CardHeader>
-                  <div className="w-24 h-24 rounded-full bg-gray-700 mx-auto mb-4 overflow-hidden">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <CardTitle className="text-xl font-bold text-center">{member.name}</CardTitle>
-                  <p className="text-gray-400 text-center">{member.role}</p>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-400 text-base text-center">{member.bio}</p>
-                </CardContent>
-              </Card>
+            <motion.div
+              key={member.slug}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+            >
+              <Link href={`/team/${member.slug}`} className="block h-full">
+                <Card className="cursor-pointer bg-gray-800/50 border border-gray-700 hover:border-red-500 hover:bg-gray-800/80 transition-all duration-300 h-full group overflow-hidden">
+                  
+                  <CardHeader className="pb-4">
+                    <div className="w-28 h-28 mx-auto rounded-full overflow-hidden mb-6 ring-2 ring-gray-700 group-hover:ring-red-500 transition-all duration-300">
+                      {member.avatar || member.image ? (
+                        <img 
+                          src={member.avatar || member.image} 
+                          alt={member.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-red-500/20 to-gray-700 flex items-center justify-center text-4xl font-bold text-red-400">
+                          {member.name[0]}
+                        </div>
+                      )}
+                    </div>
+
+                    <CardTitle className="text-center text-2xl font-semibold text-white group-hover:text-red-400 transition-colors">
+                      {member.name}
+                    </CardTitle>
+                    <p className="text-red-400 text-center font-medium">{member.role}</p>
+                  </CardHeader>
+
+                  <CardContent className="pt-2">
+                    <p className="text-gray-400 text-center line-clamp-3 text-sm leading-relaxed">
+                      {member.bio}
+                    </p>
+
+                    {/* Optional: Show skills count or key highlights */}
+                    {member.skills && (
+                      <div className="mt-6 flex justify-center">
+                        <span className="text-xs px-3 py-1 bg-gray-700/70 text-gray-400 rounded-full">
+                          {member.skills.length} skills
+                        </span>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              </Link>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
+
+        {/* Optional CTA */}
+        <div className="text-center mt-12">
+          <p className="text-gray-500 text-sm">
+            Click on any member to view their full portfolio and work samples
+          </p>
+        </div>
       </div>
     </section>
   );
